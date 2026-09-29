@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MA Properties Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f5f7;color:#151515}
+header{background:#111;color:#fff;padding:18px 5%;display:flex;justify-content:space-between;align-items:center}
+main{max-width:1100px;margin:30px auto;padding:0 18px}.panel{background:white;border-radius:14px;padding:24px;margin-bottom:22px;box-shadow:0 4px 18px #0001}
+h1,h2{margin-top:0}label{display:block;font-weight:700;margin:12px 0 6px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:15px}
+textarea{min-height:100px;resize:vertical}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+button{border:0;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer}.primary{background:#111;color:white}
+.danger{background:#c62828;color:white}.secondary{background:#e8e8e8}.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.property{border:1px solid #ddd;border-radius:12px;padding:16px}.property img{width:100%;height:170px;object-fit:cover;border-radius:8px}
+.hidden{display:none}.status{padding:10px;border-radius:8px;background:#eef6ee;margin-bottom:12px}
+@media(max-width:650px){.row{grid-template-columns:1fr}}
+</style></head>
+<body>
+<header><strong>MA PROPERTIES — ADMIN</strong><button class="secondary" id="logoutBtn" style="display:none">Logout</button></header>
+<main>
+<div id="loginPanel" class="panel"><h1>Admin Login</h1><p>Only your MA Properties admin account should use this page.</p>
+<label>Email</label><input id="email" type="email" value="adnan0khan52@gmail.com">
+<label>Password</label><input id="password" type="password" placeholder="Your Supabase password"><br><br>
+<button class="primary" id="loginBtn">Login</button><p id="loginMsg"></p></div>
+
+<div id="app" class="hidden">
+<div class="panel"><h2 id="formTitle">Add New Property</h2><div id="status" class="status">Ready.</div>
+<form id="propertyForm"><input id="id" type="hidden">
+<div class="row"><div><label>Property Title *</label><input id="title" required placeholder="3 BHK Villa in Tolichowki"></div>
+<div><label>Property Type *</label><select id="property_type" required><option>For Sale</option><option>For Rent</option><option>Farmhouse</option><option>Plot</option><option>Land</option><option>Apartment</option><option>Villa</option><option>Commercial</option></select></div></div>
+<div class="row"><div><label>Area *</label><input id="area" required placeholder="Tolichowki, Hyderabad"></div><div><label>Price</label><input id="price" type="number" placeholder="12500000"></div></div>
+<div class="row"><div><label>Bedrooms</label><input id="bedrooms" type="number"></div><div><label>Bathrooms</label><input id="bathrooms" type="number"></div></div>
+<div class="row"><div><label>Property Size</label><input id="property_size" placeholder="1800 sq.ft"></div><div><label>Status</label><select id="status_select"><option>Available</option><option>Sold</option><option>Rented</option><option>Hidden</option></select></div></div>
+<label>Description</label><textarea id="description" placeholder="Property details..."></textarea>
+<label>Photo URL (optional in version 1)</label><input id="photo_url" placeholder="https://...">
+<hr><h3>Owner — Private</h3>
+<div class="row"><div><label>Owner Name</label><input id="owner_name"></div><div><label>Owner Phone</label><input id="owner_phone"></div></div>
+<label>Private Notes</label><textarea id="private_notes" placeholder="Commission, owner requirements, follow-up notes..."></textarea><br>
+<button class="primary" type="submit">Save Property</button> <button class="secondary" type="button" id="clearBtn">Clear Form</button>
+</form></div>
+<div class="panel"><h2>Your Properties</h2><div id="list" class="grid">Loading...</div></div>
+</div></main>
+<script>
+const SUPABASE_URL="https://uxuznjizeitotzynopdf.supabase.co";
+const SUPABASE_KEY="sb_publishable_0yOs-z09Q8O3mlAbgIxWNQ_x2gGxHTb";
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=id=>document.getElementById(id);let properties=[];
+function setStatus(msg,bad=false){$("status").textContent=msg;$("status").style.background=bad?"#fdecec":"#eef6ee"}
+function resetForm(){$("propertyForm").reset();$("id").value="";$("formTitle").textContent="Add New Property";$("status_select").value="Available"}
+function fillForm(p){
+ $("id").value=p.id;$("title").value=p.title||"";$("property_type").value=p.property_type||"For Sale";$("area").value=p.area||"";
+ $("price").value=p.price??"";$("bedrooms").value=p.bedrooms??"";$("bathrooms").value=p.bathrooms??"";$("property_size").value=p.property_size||"";
+ $("status_select").value=p.status||"Available";$("description").value=p.description||"";$("photo_url").value=p.photo_url||"";
+ $("owner_name").value=p.owner_name||"";$("owner_phone").value=p.owner_phone||"";$("private_notes").value=p.private_notes||"";
+ $("formTitle").textContent="Edit Property";window.scrollTo({top:0,behavior:"smooth"});
+}
+async function loadAdminProperties(){
+ const {data,error}=await sb.from("properties").select("*").order("created_at",{ascending:false});
+ if(error){$("list").innerHTML="<div>Could not load properties. Check your admin login and policies.</div>";return}
+ properties=data||[];if(!properties.length){$("list").innerHTML="<div>No properties yet. Add your first owner property above.</div>";return}
+ $("list").innerHTML=properties.map(p=>`<div class="property"><img src="${p.photo_url||"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=700&q=80"}" alt="">
+ <h3>${p.title}</h3><div>${p.property_type} · ${p.area}</div><div><strong>₹${p.price?Number(p.price).toLocaleString("en-IN"):"Price on Request"}</strong></div>
+ <p>Status: <strong>${p.status}</strong></p><button class="primary" onclick="editProperty('${p.id}')">Edit</button> <button class="danger" onclick="deleteProperty('${p.id}')">Delete</button></div>`).join("");
+}
+window.editProperty=id=>{const p=properties.find(x=>x.id===id);if(p)fillForm(p)}
+window.deleteProperty=async id=>{if(!confirm("Delete this property?"))return;const {error}=await sb.from("properties").delete().eq("id",id);if(error){alert("Delete failed: "+error.message);return}setStatus("Property deleted.");loadAdminProperties()}
+$("loginBtn").onclick=async()=>{$("loginMsg").textContent="Logging in...";const {error}=await sb.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error){$("loginMsg").textContent=error.message;return}$("loginPanel").classList.add("hidden");$("app").classList.remove("hidden");$("logoutBtn").style.display="block";loadAdminProperties()}
+$("logoutBtn").onclick=async()=>{await sb.auth.signOut();location.reload()}
+$("clearBtn").onclick=resetForm;
+$("propertyForm").onsubmit=async e=>{
+ e.preventDefault();setStatus("Saving...");const id=$("id").value;
+ const record={title:$("title").value.trim(),property_type:$("property_type").value,area:$("area").value.trim(),price:$("price").value?Number($("price").value):null,
+ bedrooms:$("bedrooms").value?Number($("bedrooms").value):null,bathrooms:$("bathrooms").value?Number($("bathrooms").value):null,property_size:$("property_size").value.trim()||null,
+ status:$("status_select").value,description:$("description").value.trim()||null,photo_url:$("photo_url").value.trim()||null,owner_name:$("owner_name").value.trim()||null,
+ owner_phone:$("owner_phone").value.trim()||null,private_notes:$("private_notes").value.trim()||null};
+ const result=id?await sb.from("properties").update(record).eq("id",id):await sb.from("properties").insert(record);
+ if(result.error){setStatus(result.error.message,true);return}setStatus(id?"Property updated successfully.":"Property added successfully.");resetForm();loadAdminProperties();
+}
+sb.auth.getSession().then(({data})=>{if(data.session){$("loginPanel").classList.add("hidden");$("app").classList.remove("hidden");$("logoutBtn").style.display="block";loadAdminProperties()}});
+</script></body></html>
