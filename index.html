@@ -45,7 +45,7 @@ const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 function money(v){return v===null||v===undefined||v===""?"Price on Request":"₹"+Number(v).toLocaleString("en-IN")}
 async function loadProperties(){
  const grid=document.getElementById("propertyGrid");
- const {data,error}=await sb.from("public_properties").select("*").eq("status","Available").order("created_at",{ascending:false});
+ const {data,error}=await sb.from("properties").select("*").eq("status","Available").order("created_at",{ascending:false});
  if(error){grid.innerHTML='<div class="card"><strong>Properties are temporarily unavailable.</strong></div>';console.error(error);return}
  if(!data.length){grid.innerHTML='<div class="card"><strong>No properties listed yet.</strong><p class="muted">MA Properties will add verified properties here after owner meetings.</p></div>';return}
  grid.innerHTML=data.map(p=>{
