@@ -1,62 +1,788 @@
-<!doctype html>
+```html
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MA Properties | Your Trusted Property Partner</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f7f7f5;color:#171717}
-header{background:#111;color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5}
-header a{color:white;text-decoration:none;margin-left:20px}.brand{font-size:22px;font-weight:800}
-.hero{padding:80px 6%;background:linear-gradient(135deg,#171717,#343434);color:white}
-.hero h1{font-size:48px;max-width:700px;margin:12px 0}.hero p{font-size:18px;max-width:700px;line-height:1.6;color:#ddd}
-.btn{display:inline-block;background:#d7b46a;color:#111;padding:13px 18px;border-radius:8px;text-decoration:none;font-weight:700;border:0;cursor:pointer}
-section{padding:55px 6%}h2{font-size:32px}.services,.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
-.card{background:white;border-radius:14px;padding:22px;box-shadow:0 5px 20px #00000012}.property img{width:100%;height:210px;object-fit:cover;border-radius:10px;background:#ddd}
-.tag{display:inline-block;font-size:12px;font-weight:700;padding:6px 9px;border-radius:20px;background:#eee;margin-top:12px}
-.price{font-size:20px;font-weight:800;margin:10px 0}.muted{color:#666}footer{background:#111;color:#ddd;padding:30px 6%;text-align:center}
-@media(max-width:700px){.hero h1{font-size:36px}header nav{display:none}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MA Properties | Hyderabad Property Services</title>
+  <meta name="description" content="MA Properties - Your Trusted Property Partner in Hyderabad. Buy, sell, rent properties and farmhouses.">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f6f7f9;
+      color: #17202a;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 18px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .nav {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #111827, #26354d);
+      color: white;
+      padding: 80px 6%;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 46px;
+      margin: 10px 0;
+    }
+
+    .hero h2 {
+      font-size: 18px;
+      letter-spacing: 2px;
+      margin: 0 0 22px;
+      font-weight: 500;
+    }
+
+    .hero p {
+      font-size: 19px;
+      max-width: 720px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 22px;
+      border-radius: 8px;
+      font-weight: 700;
+      margin: 5px;
+    }
+
+    .btn-primary {
+      background: #25d366;
+      color: white;
+    }
+
+    .btn-dark {
+      background: white;
+      color: #111827;
+    }
+
+    .section {
+      padding: 55px 6%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section h2 {
+      text-align: center;
+      font-size: 32px;
+      margin: 0 0 10px;
+    }
+
+    .section-intro {
+      text-align: center;
+      color: #64748b;
+      margin: 0 auto 30px;
+      max-width: 700px;
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .service,
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 5px 20px rgba(15, 23, 42, .07);
+    }
+
+    .service h3 {
+      margin: 8px 0;
+      font-size: 20px;
+    }
+
+    .service p {
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .property-card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(15, 23, 42, .08);
+      border: 1px solid #e5e7eb;
+    }
+
+    .property-photo {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      background: #e5e7eb;
+      display: block;
+    }
+
+    .no-photo {
+      height: 210px;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      font-weight: 700;
+    }
+
+    .property-body {
+      padding: 20px;
+    }
+
+    .property-body h3 {
+      margin: 8px 0;
+      font-size: 21px;
+    }
+
+    .property-area {
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+
+    .price {
+      font-size: 21px;
+      font-weight: 800;
+      margin: 10px 0;
+    }
+
+    .details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .tag {
+      background: #f1f5f9;
+      border-radius: 20px;
+      padding: 7px 10px;
+      font-size: 13px;
+    }
+
+    .status {
+      display: inline-block;
+      background: #dcfce7;
+      color: #166534;
+      border-radius: 20px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .description {
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    .loading,
+    .empty,
+    .error {
+      grid-column: 1 / -1;
+      text-align: center;
+    }
+
+    .error {
+      color: #b91c1c;
+    }
+
+    .contact {
+      background: #111827;
+      color: white;
+    }
+
+    .contact .section-intro {
+      color: #cbd5e1;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .contact-card {
+      background: #1f2937;
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .contact-card h3 {
+      margin-top: 0;
+    }
+
+    .contact-card p {
+      color: #d1d5db;
+      line-height: 1.6;
+    }
+
+    footer {
+      background: #0b1220;
+      color: #9ca3af;
+      text-align: center;
+      padding: 20px;
+    }
+
+    @media (max-width: 800px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero h1 {
+        font-size: 35px;
+      }
+
+      .services,
+      .property-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 42px 5%;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<header><div class="brand">MA PROPERTIES</div><nav><a href="#home">Home</a><a href="#properties">Properties</a><a href="#services">Services</a><a href="#contact">Contact</a></nav></header>
-<main id="home">
-<section class="hero"><div>HYDERABAD PROPERTY SERVICES</div>
-<h1>Find the Right Property With MA Properties</h1>
-<p>Your Trusted Property Partner. Buy, sell, rent or find a farmhouse across Hyderabad with personal assistance from enquiry to deal.</p>
-<a class="btn" href="#properties">View Properties</a></section>
-<section id="services"><h2>What We Do</h2><div class="services">
-<div class="card"><h3>🏠 Buy Property</h3><p>Homes, flats, plots and land based on your requirement and budget.</p></div>
-<div class="card"><h3>🤝 Sell Property</h3><p>Connect your property with genuine buyers across Hyderabad.</p></div>
-<div class="card"><h3>🔑 Rent Property</h3><p>Residential and commercial rental assistance.</p></div>
-<div class="card"><h3>🌿 Farmhouses</h3><p>Farmhouse properties and land around Hyderabad.</p></div>
-</div></section>
-<section id="properties"><h2>Available Properties</h2><p class="muted">Properties are updated by MA Properties after owner verification.</p>
-<div id="propertyGrid" class="grid"><div class="card">Loading properties...</div></div></section>
-<section id="contact"><h2>Contact MA Properties</h2><div class="card">
-<p>📞 <strong>Phone / WhatsApp:</strong> <a href="https://wa.me/918897198707">8897198707</a></p>
-<p>✉️ <strong>Email:</strong> adnan0khan52@gmail.com</p><p>📍 <strong>Service Area:</strong> All over Hyderabad</p>
-<a class="btn" href="https://wa.me/918897198707?text=Hello%20MA%20Properties,%20I%20am%20interested%20in%20a%20property.">WhatsApp MA Properties</a>
-</div></section></main><footer>MA PROPERTIES · Your Trusted Property Partner · Hyderabad</footer>
+
+<header class="header">
+  <div class="logo">MA PROPERTIES</div>
+
+  <nav class="nav">
+    <a href="#properties">Properties</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+
+<section class="hero">
+
+  <h2>HYDERABAD PROPERTY SERVICES</h2>
+
+  <h1>Find the Right Property With MA Properties</h1>
+
+  <p>
+    Your Trusted Property Partner for buying, selling, renting
+    and farmhouse properties across Hyderabad.
+  </p>
+
+  <a
+    class="btn btn-primary"
+    href="https://wa.me/918897198707"
+    target="_blank"
+    rel="noopener"
+  >
+    WhatsApp Us
+  </a>
+
+  <a class="btn btn-dark" href="#properties">
+    View Properties
+  </a>
+
+</section>
+
+
+<section class="section" id="services">
+
+  <h2>Our Services</h2>
+
+  <p class="section-intro">
+    Property services for owners, buyers and tenants across Hyderabad.
+  </p>
+
+  <div class="services">
+
+    <div class="service">
+      <h3>🏠 Buy Property</h3>
+      <p>
+        Find residential and other properties available for purchase.
+      </p>
+    </div>
+
+    <div class="service">
+      <h3>🤝 Sell Property</h3>
+      <p>
+        Connect property owners with genuine buyers.
+      </p>
+    </div>
+
+    <div class="service">
+      <h3>🔑 Rent Property</h3>
+      <p>
+        Find suitable rental properties across Hyderabad.
+      </p>
+    </div>
+
+    <div class="service">
+      <h3>🌿 Farmhouses</h3>
+      <p>
+        Buy or rent farmhouse properties for living,
+        investment or leisure.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="section" id="properties">
+
+  <h2>Available Properties</h2>
+
+  <p class="section-intro">
+    Verified properties added by MA Properties.
+  </p>
+
+  <div id="propertyGrid" class="property-grid">
+
+    <div class="card loading">
+      Loading properties...
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="contact" id="contact">
+
+  <div class="section">
+
+    <h2>Contact MA Properties</h2>
+
+    <p class="section-intro">
+      Your Trusted Property Partner
+    </p>
+
+    <div class="contact-grid">
+
+      <div class="contact-card">
+        <h3>Phone / WhatsApp</h3>
+        <p>
+          <a
+            href="tel:+918897198707"
+            style="color:white"
+          >
+            8897198707
+          </a>
+        </p>
+      </div>
+
+      <div class="contact-card">
+        <h3>Email</h3>
+        <p>
+          <a
+            href="mailto:adnan0khan52@gmail.com"
+            style="color:white"
+          >
+            adnan0khan52@gmail.com
+          </a>
+        </p>
+      </div>
+
+      <div class="contact-card">
+        <h3>Service Area</h3>
+        <p>
+          All over Hyderabad
+        </p>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:25px">
+
+      <a
+        class="btn btn-primary"
+        href="https://wa.me/918897198707"
+        target="_blank"
+        rel="noopener"
+      >
+        Chat on WhatsApp
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<footer>
+  © 2026 MA Properties. All rights reserved.
+</footer>
+
+
 <script>
-const SUPABASE_URL="https://uxuznjizeitotzynopdf.supabase.co";
-const SUPABASE_KEY="sb_publishable_0yOs-z09Q8O3mlAbgIxWNQ_x2gGxHTb";
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-function money(v){return v===null||v===undefined||v===""?"Price on Request":"₹"+Number(v).toLocaleString("en-IN")}
-async function loadProperties(){
- const grid=document.getElementById("propertyGrid");
- const {data,error}=await sb.from("public_properties").select("*").eq("status","Available").order("created_at",{ascending:false});
- if(error){grid.innerHTML='<div class="card"><strong>Properties are temporarily unavailable.</strong></div>';console.error(error);return}
- if(!data.length){grid.innerHTML='<div class="card"><strong>No properties listed yet.</strong><p class="muted">MA Properties will add verified properties here after owner meetings.</p></div>';return}
- grid.innerHTML=data.map(p=>{
-  const image=p.photo_url||"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80";
-  const text=encodeURIComponent(`Hello MA Properties, I am interested in: ${p.title} in ${p.area}`);
-  return `<article class="card property"><img src="${image}" alt="${p.title}">
-  <span class="tag">${p.property_type||"PROPERTY"}</span><h3>${p.title}</h3><p class="muted">📍 ${p.area}</p>
-  <div class="price">${money(p.price)}</div><p>${p.description||""}</p>
-  <p class="muted">${p.property_size?"📐 "+p.property_size:""} ${p.bedrooms?" · 🛏 "+p.bedrooms:""} ${p.bathrooms?" · 🛁 "+p.bathrooms:""}</p>
-  <a class="btn" href="https://wa.me/918897198707?text=${text}">Enquire on WhatsApp</a></article>`;
- }).join("");
-}
-loadProperties();
-</script></body></html>
+
+(function () {
+
+  const SUPABASE_URL =
+    "https://uxuznjizeitotzynopdf.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_0yOs-z09Q8O3mlAbgIxWNQ_x2gGxHTb";
+
+  const grid =
+    document.getElementById("propertyGrid");
+
+
+  function escapeHtml(value) {
+
+    return String(value ?? "").replace(
+      /[&<>"']/g,
+      function (c) {
+
+        return {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        }[c];
+
+      }
+    );
+
+  }
+
+
+  function formatPrice(value) {
+
+    if (
+      value === null ||
+      value === undefined ||
+      value === ""
+    ) {
+      return "Price on Request";
+    }
+
+    const number =
+      Number(
+        String(value).replace(/[^0-9.-]/g, "")
+      );
+
+    if (Number.isFinite(number)) {
+
+      return "₹" +
+        number.toLocaleString("en-IN");
+
+    }
+
+    return escapeHtml(value);
+
+  }
+
+
+  function propertyCard(p) {
+
+    let photo;
+
+    if (p.photo_url) {
+
+      photo =
+        '<img class="property-photo" src="' +
+        escapeHtml(p.photo_url) +
+        '" alt="' +
+        escapeHtml(p.title) +
+        '">';
+
+    } else {
+
+      photo =
+        '<div class="no-photo">' +
+        'MA Properties' +
+        '</div>';
+
+    }
+
+
+    const details = [];
+
+
+    if (
+      p.bedrooms !== null &&
+      p.bedrooms !== undefined &&
+      p.bedrooms !== ""
+    ) {
+
+      details.push(
+        "🛏 " +
+        escapeHtml(p.bedrooms) +
+        " BHK"
+      );
+
+    }
+
+
+    if (
+      p.bathrooms !== null &&
+      p.bathrooms !== undefined &&
+      p.bathrooms !== ""
+    ) {
+
+      details.push(
+        "🛁 " +
+        escapeHtml(p.bathrooms) +
+        " Bath"
+      );
+
+    }
+
+
+    if (p.property_size) {
+
+      details.push(
+        "📐 " +
+        escapeHtml(p.property_size)
+      );
+
+    }
+
+
+    return (
+
+      '<article class="property-card">' +
+
+        photo +
+
+        '<div class="property-body">' +
+
+          '<span class="status">' +
+            escapeHtml(p.status || "Available") +
+          '</span>' +
+
+          '<h3>' +
+            escapeHtml(p.title) +
+          '</h3>' +
+
+          '<div class="property-area">' +
+            '📍 ' +
+            escapeHtml(p.area) +
+          '</div>' +
+
+          '<div class="price">' +
+            formatPrice(p.price) +
+          '</div>' +
+
+          (
+            details.length
+              ?
+              '<div class="details">' +
+                details.map(function (x) {
+
+                  return (
+                    '<span class="tag">' +
+                      x +
+                    '</span>'
+                  );
+
+                }).join("") +
+              '</div>'
+              :
+              ''
+          ) +
+
+          (
+            p.description
+              ?
+              '<p class="description">' +
+                escapeHtml(p.description) +
+              '</p>'
+              :
+              ''
+          ) +
+
+          '<a ' +
+            'class="btn btn-primary" ' +
+            'href="https://wa.me/918897198707?text=' +
+            encodeURIComponent(
+              "Hi MA Properties, I am interested in: " +
+              (p.title || "") +
+              " in " +
+              (p.area || "")
+            ) +
+            '" target="_blank" rel="noopener">' +
+            'Enquire on WhatsApp' +
+          '</a>' +
+
+        '</div>' +
+
+      '</article>'
+
+    );
+
+  }
+
+
+  async function loadProperties() {
+
+    const endpoint =
+      SUPABASE_URL +
+      "/rest/v1/public_properties" +
+      "?select=*" +
+      "&status=eq.Available" +
+      "&order=created_at.desc";
+
+
+    try {
+
+      const response =
+        await fetch(
+          endpoint,
+          {
+            method: "GET",
+
+            headers: {
+              "apikey": SUPABASE_KEY,
+
+              "Authorization":
+                "Bearer " + SUPABASE_KEY,
+
+              "Accept":
+                "application/json"
+            },
+
+            cache: "no-store"
+          }
+        );
+
+
+      const text =
+        await response.text();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Supabase " +
+          response.status +
+          ": " +
+          text
+        );
+
+      }
+
+
+      const data =
+        JSON.parse(text);
+
+
+      if (
+        !Array.isArray(data) ||
+        data.length === 0
+      ) {
+
+        grid.innerHTML =
+          '<div class="card empty">' +
+
+            '<strong>' +
+              'No properties listed yet.' +
+            '</strong>' +
+
+            '<p class="section-intro">' +
+              'MA Properties will add verified properties here after owner meetings.' +
+            '</p>' +
+
+          '</div>';
+
+        return;
+
+      }
+
+
+      grid.innerHTML =
+        data
+          .map(propertyCard)
+          .join("");
+
+
+    } catch (error) {
+
+      console.error(
+        "MA Properties property loading error:",
+        error
+      );
+
+
+      grid.innerHTML =
+        '<div class="card error">' +
+
+          '<strong>' +
+            'Properties could not be loaded.' +
+          '</strong>' +
+
+          '<p>' +
+            'Please refresh the page. If the problem continues, contact MA Properties.' +
+          '</p>' +
+
+        '</div>';
+
+    }
+
+  }
+
+
+  loadProperties();
+
+})();
+
+</script>
+
+</body>
+</html>
+```
